@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Prologue</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <div class="quote">
+    UN JOUR<br>
+    JE SERAI DE RETOUR<br>
+    PRÈS DE TOI
+  </div>
+
+  <div class="enter">↓ enter</div>
+
+  <script>
+    document.querySelector(".enter").onclick = function(){
+      document.body.classList.add("awake");
+
+      document.querySelector(".quote").innerHTML =
+        "总有一天<br>我会回到<br>你身边";
+    }
+  </script>
+
+</body>
+</html>

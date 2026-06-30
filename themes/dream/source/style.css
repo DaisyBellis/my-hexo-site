@@ -1,0 +1,28 @@
+body{
+  height:100vh;
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background:#f6f2ee;
+  font-family: serif;
+  transition: all 1.5s ease;
+}
+
+.quote{
+  text-align:center;
+  font-size:22px;
+  letter-spacing:0.2em;
+  margin-bottom:40px;
+}
+
+.enter{
+  cursor:pointer;
+  opacity:0.6;
+}
+
+body.awake{
+  background:#7D1F1F;
+  color:white;
+}
