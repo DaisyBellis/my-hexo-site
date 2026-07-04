@@ -1,29 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <title>Prologue</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= config.title %></title>
+
+  <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="<%- url_for('/css/style.css') %>?v=11">
 </head>
-
 <body>
-
-  <div class="quote">
-    UN JOUR<br>
-    JE SERAI DE RETOUR<br>
-    PRÈS DE TOI
+  <div id="entrance">
+  <img id="cover-b" class="cover" src="<%- url_for('/img/cover-b.png') %>" alt="">
+  <img id="cover-c" class="cover hidden" src="<%- url_for('/img/cover-c.png') %>" alt="">
+  <p id="text-zh" class="hidden">总有一天我会回到你身边</p>
+  <div id="enter-hint" class="hidden">
+    <span class="hint-text">click</span>
+    <span class="hint-arrow">↓</span>
   </div>
-
-  <div class="enter">↓ enter</div>
-
-  <script>
-    document.querySelector(".enter").onclick = function(){
-      document.body.classList.add("awake");
-
-      document.querySelector(".quote").innerHTML =
-        "总有一天<br>我会回到<br>你身边";
-    }
-  </script>
-
+</div>
+<canvas id="fire-canvas"></canvas>
+<script src="<%- url_for('/js/burn.js') %>"></script>
 </body>
 </html>

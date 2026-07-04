@@ -1,0 +1,121 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #1a0505;
+  cursor: pointer;
+}
+
+#entrance {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 封面图叠在一起，纯淡入淡出 */
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 1.6s ease;
+  user-select: none;
+}
+
+.cover.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* cover-b 首次加载缓慢淡入 */
+#cover-b {
+  animation: fadeInSlow 3s ease forwards;
+}
+
+@keyframes fadeInSlow {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* cover-c 上的白色居中中文 */
+#text-zh {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  color: #ffffff;
+  font-family: 'LXGW WenKai', 'Songti SC', serif;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(120,20,10,0.4);
+  user-select: none;
+  transition: opacity 2s ease;
+}
+
+#text-zh.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#text-zh.reveal {
+  opacity: 1;
+  animation: dreamIn 3s ease forwards;
+}
+
+@keyframes dreamIn {
+  0%   { opacity: 0; filter: blur(12px); transform: translate(-50%, -50%) scale(0.96); }
+  100% { opacity: 1; filter: blur(0);    transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 进入内容的点击提示 */
+#enter-hint {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  color: #ffffff;
+  font-family: 'LXGW WenKai', serif;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  text-shadow: 0 0 12px rgba(0,0,0,0.6);
+  transition: opacity 1.5s ease;
+}
+
+#enter-hint.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#enter-hint.reveal {
+  opacity: 1;
+  animation: hintFloat 2s ease-in-out infinite;
+}
+
+.hint-text { font-size: 1rem; }
+.hint-arrow { font-size: 1.4rem; }
+
+@keyframes hintFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(8px); }
+}
+
+/* 火焰画布 */
+#fire-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10;
+}
