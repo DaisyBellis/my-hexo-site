@@ -4,118 +4,109 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: #1a0505;
   cursor: pointer;
 }
 
-#entrance {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-}
-
-/* 封面图叠在一起，纯淡入淡出 */
-.cover {
-  position: absolute;
+/* 页面容器：缓慢缩放淡入淡出 */
+.page {
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   opacity: 1;
-  transition: opacity 1.6s ease;
-  user-select: none;
+  transform: scale(1);
+  transition: opacity 1.5s ease, transform 1.5s ease;   /* 更慢 */
 }
 
-.cover.hidden {
+/* 隐藏：透明 + 轻微缩放（缓缓切入感） */
+.page.hidden {
   opacity: 0;
+  transform: scale(1.06);
   pointer-events: none;
 }
 
-/* cover-b 首次加载缓慢淡入 */
-#cover-b {
-  animation: fadeInSlow 3s ease forwards;
+/* 第一页：牛皮纸/淡黄背景 */
+#page1 {
+  background-color: #e6d5b8;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(170,140,95,0.18) 0%, transparent 45%),
+    radial-gradient(circle at 78% 72%, rgba(140,105,65,0.15) 0%, transparent 48%),
+    linear-gradient(135deg, rgba(215,190,150,0.35), rgba(205,175,135,0.35));
 }
 
-@keyframes fadeInSlow {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+/* 第二页：红色背景 */
+#page2 {
+  background-color: #7a1414;
 }
 
-/* cover-c 上的白色居中中文 */
-#text-zh {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
+/* 法文：细体古典衬线 */
+.fr-text {
+  color: #1a1a1a;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 2.2rem;       /* 缩小，原 3rem */
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-align: center;
+  user-select: none;
+}
+
+/* 中文：白色 */
+.zh-text {
   color: #ffffff;
   font-family: 'LXGW WenKai', 'Songti SC', serif;
   font-size: 2.2rem;
   letter-spacing: 0.3em;
   text-align: center;
   white-space: nowrap;
-  text-shadow: 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(120,20,10,0.4);
+  text-shadow: 0 0 20px rgba(0,0,0,0.4);
   user-select: none;
-  transition: opacity 2s ease;
-}
-
-#text-zh.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#text-zh.reveal {
-  opacity: 1;
-  animation: dreamIn 3s ease forwards;
+  /* 去掉了 animation，跟随页面淡入 */
 }
 
 @keyframes dreamIn {
-  0%   { opacity: 0; filter: blur(12px); transform: translate(-50%, -50%) scale(0.96); }
-  100% { opacity: 1; filter: blur(0);    transform: translate(-50%, -50%) scale(1); }
+  0%   { opacity: 0; filter: blur(12px); transform: scale(0.94); }
+  100% { opacity: 1; filter: blur(0);    transform: scale(1); }
 }
 
-/* 进入内容的点击提示 */
-#enter-hint {
+/* click↓ 提示 */
+.hint {
   position: absolute;
   bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 6;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.3em;
-  color: #ffffff;
-  font-family: 'LXGW WenKai', serif;
-  letter-spacing: 0.2em;
+  gap: 0.4em;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
   cursor: pointer;
-  text-shadow: 0 0 12px rgba(0,0,0,0.6);
-  transition: opacity 1.5s ease;
-}
-
-#enter-hint.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#enter-hint.reveal {
-  opacity: 1;
+  user-select: none;
   animation: hintFloat 2s ease-in-out infinite;
 }
 
-.hint-text { font-size: 1rem; }
-.hint-arrow { font-size: 1.4rem; }
+#page1 .hint { color: #1a1a1a; }
+#page2 .hint { color: #ffffff; }
+
+.hint .arrow { font-size: 1.4rem; }
 
 @keyframes hintFloat {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50%      { transform: translateX(-50%) translateY(8px); }
 }
 
-/* 火焰画布 */
+/* 火焰画布：最上层 */
 #fire-canvas {
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
-  z-index: 10;
+  z-index: 9999;           /* 提到最顶层 */
 }

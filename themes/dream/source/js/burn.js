@@ -1,10 +1,9 @@
 (function () {
   const canvas = document.getElementById('fire-canvas');
   const ctx = canvas.getContext('2d');
-  const coverB = document.getElementById('cover-b');
-  const coverC = document.getElementById('cover-c');
-  const textZh = document.getElementById('text-zh');
-  const enterHint = document.getElementById('enter-hint');
+  const page1 = document.getElementById('page1');
+  const page2 = document.getElementById('page2');
+  const hint1 = document.getElementById('hint1');
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -14,9 +13,9 @@
   window.addEventListener('resize', resize);
 
   let particles = [];
-  let step = 0;                 // 0=初始(B), 1=已到C
-  let bottomFire = true;        // 底部火焰：初始就开启
-  let fireBoost = false;        // 点击后加速
+  let step = 0;
+  let bottomFire = false;
+  let fireBoost = false;
 
   const colors = [
     '#fff4b8', '#ffd166', '#ff9f1c', '#ff6b35',
@@ -64,7 +63,6 @@
     mouseX = e.clientX;
     mouseY = e.clientY;
     mouseMoving = true;
-
     for (let i = 0; i < 4; i++) {
       particles.push(new Particle(
         mouseX + (Math.random() - 0.5) * 12,
@@ -72,7 +70,6 @@
         { size: Math.random() * 3.5 + 1.5, decay: Math.random() * 0.025 + 0.018 }
       ));
     }
-
     clearTimeout(moveTimer);
     moveTimer = setTimeout(() => { mouseMoving = false; }, 120);
   });
@@ -90,7 +87,7 @@
 
   function spawnBottomFire() {
     if (!bottomFire) return;
-    const count = fireBoost ? 12 : 6;
+    const count = fireBoost ? 12 : 8;
     const speedMul = fireBoost ? 1.8 : 1;
     for (let i = 0; i < count; i++) {
       const x = Math.random() * canvas.width;
@@ -103,30 +100,36 @@
     }
   }
 
-  // 点击：B → C（只需一次点击）
-  function nextStep() {
+  document.addEventListener('click', function () {
     if (step === 0) {
-      coverB.classList.add('hidden');
-      coverC.classList.remove('hidden');
+      bottomFire = true;
       fireBoost = true;
-      setTimeout(() => {
-        textZh.classList.remove('hidden');
-        textZh.classList.add('reveal');
-        if (enterHint) {
-          enterHint.classList.remove('hidden');
-          enterHint.classList.add('reveal');
-        }
-      }, 800);
       step = 1;
     }
-  }
+  });
 
-  document.addEventListener('click', nextStep);
+  hint1.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (step === 0) {
+      bottomFire = true;
+      fireBoost = true;
+      step = 1;
+      return;
+    }
+    if (step === 1) {
+      step = 2;
+      // 第一步：法文页淡出
+      page1.classList.add('hidden');
+      // 第二步：等淡出完成后（3秒），再让中文页淡入
+      setTimeout(() => {
+        page2.classList.remove('hidden');
+      }, 1500);   // 和 CSS 里 .page 的 transition 3s 对应
+    }
+  });
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.globalCompositeOperation = 'lighter';
-
     spawnMouseIdleFire();
     spawnBottomFire();
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -135,7 +138,6 @@
       p.draw();
       if (p.life <= 0 || p.size <= 0.1) particles.splice(i, 1);
     }
-
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
     requestAnimationFrame(animate);
