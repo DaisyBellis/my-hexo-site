@@ -20,10 +20,9 @@ html, body {
   justify-content: center;
   opacity: 1;
   transform: scale(1);
-  transition: opacity 1.5s ease, transform 1.5s ease;   /* 更慢 */
+  transition: opacity 1.5s ease, transform 1.5s ease;
 }
 
-/* 隐藏：透明 + 轻微缩放（缓缓切入感） */
 .page.hidden {
   opacity: 0;
   transform: scale(1.06);
@@ -48,7 +47,7 @@ html, body {
 .fr-text {
   color: #1a1a1a;
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 2.2rem;       /* 缩小，原 3rem */
+  font-size: 2.2rem;
   font-weight: 300;
   font-style: italic;
   letter-spacing: 0.08em;
@@ -57,7 +56,7 @@ html, body {
   user-select: none;
 }
 
-/* 中文：白色 */
+/* 中文：白色，默认隐藏，reveal 时浮现 */
 .zh-text {
   color: #ffffff;
   font-family: 'LXGW WenKai', 'Songti SC', serif;
@@ -67,7 +66,11 @@ html, body {
   white-space: nowrap;
   text-shadow: 0 0 20px rgba(0,0,0,0.4);
   user-select: none;
-  /* 去掉了 animation，跟随页面淡入 */
+  opacity: 0;
+}
+
+.zh-text.reveal {
+  animation: dreamIn 2.5s ease forwards;
 }
 
 @keyframes dreamIn {
@@ -75,12 +78,9 @@ html, body {
   100% { opacity: 1; filter: blur(0);    transform: scale(1); }
 }
 
-/* click↓ 提示 */
+/* click↓ 提示：紧贴文字下方 */
 .hint {
-  position: absolute;
-  bottom: 8%;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 1.5em;
   display: flex;
   align-items: center;
   gap: 0.4em;
@@ -94,13 +94,21 @@ html, body {
 }
 
 #page1 .hint { color: #1a1a1a; }
-#page2 .hint { color: #ffffff; }
+/* 第二页的 click↓ 默认隐藏，跟中文一起出现 */
+#page2 .hint {
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
 
+#page2 .hint.reveal {
+  opacity: 1;
+}
 .hint .arrow { font-size: 1.4rem; }
 
 @keyframes hintFloat {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%      { transform: translateX(-50%) translateY(8px); }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
 }
 
 /* 火焰画布：最上层 */
@@ -108,5 +116,5 @@ html, body {
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
-  z-index: 9999;           /* 提到最顶层 */
+  z-index: 9999;
 }

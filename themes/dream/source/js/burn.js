@@ -4,6 +4,8 @@
   const page1 = document.getElementById('page1');
   const page2 = document.getElementById('page2');
   const hint1 = document.getElementById('hint1');
+  const hint2 = document.querySelector('#page2 .hint');
+  const zhText = document.querySelector('.zh-text');
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -118,12 +120,14 @@
     }
     if (step === 1) {
       step = 2;
-      // 第一步：法文页淡出
+      // 法文淡出，同时红底淡入（无空白）
       page1.classList.add('hidden');
-      // 第二步：等淡出完成后（3秒），再让中文页淡入
-      setTimeout(() => {
-        page2.classList.remove('hidden');
-      }, 1500);   // 和 CSS 里 .page 的 transition 3s 对应
+      page2.classList.remove('hidden');
+      // 红底铺满后中文浮现
+           setTimeout(() => {
+        zhText.classList.add('reveal');
+        hint2.classList.add('reveal');   // click↓ 跟中文一起浮现
+      }, 1400);
     }
   });
 
